@@ -3,6 +3,7 @@ const app=express()
 var cors=require('cors')
 const port= process.env.PORT||5000;
 app.use(cors())
+app.get("/",require('./initial'))
 app.use('/api/amazon',require('./amazon'))
 app.use('/api/flipkart',require("./flipkart"))
 
