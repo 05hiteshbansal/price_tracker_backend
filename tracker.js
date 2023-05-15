@@ -1,42 +1,52 @@
-require('dotenv').config()
-const sgMail = require('@sendgrid/mail')
-sgMail.setApiKey(process.env.SENDGRID_API_KEY)
-
+const mongoose = require('mongoose');
+ require('dotenv').config()
+ const User=require('./schema')
+ const sendmail = require('sendmail')();
 const nightmare = require('nightmare')()
+const express = require("express");
+const router = express.Router();
+router.post('/',(req,res)=>{
+  console.log(req.body)
+ var url=req.body.data.url
+ var price=req.body.data.price
+ var Email=req.body.data.email
+ var minPrice = price
 
-const args = process.argv.slice(2)
-const url = args[0]
-const minPrice = args[1]
-
-checkPrice()
-
-async function checkPrice() {
-  try {
-    const priceString = await nightmare.goto(url)
-                                       .wait("#priceblock_ourprice")
-                                       .evaluate(() => document.getElementById("priceblock_ourprice").innerText)
-                                       .end()
-    const priceNumber = parseFloat(priceString.replace('$', ''))
-    if (priceNumber < minPrice) {
-      await sendEmail(
-        'Price Is Low',
-        `The price on ${url} has dropped below ${minPrice}`
-      )
-    }
-  } catch (e) {
-    await sendEmail('Amazon Price Checker Error', e.message)
-    throw e
-  }
-}
-
-function sendEmail(subject, body) {
-  const email = {
-    to: 'gisoteges@mail-desk.net',
-    from: 'amazon-price-checker@example.com',
-    subject: subject,
-    text: body,
-    html: body
-  }
-
-  return sgMail.send(email)
-}
+//var u=false; 
+ //checkPrice()
+ 
+//  async function checkPrice() {
+//    try {
+//      const priceString = await nightmare.goto(url)
+//                                         .wait("corePriceDisplay_desktop_feature_div")
+//                                         .evaluate(() => document.getElement("#corePriceDisplay_desktop_feature_div > div.a-section.a-spacing-none.aok-align-center > span.a-price.aok-align-center.reinventPricePriceToPayMargin.priceToPay > span:nth-child(2) > span.a-price-whole").innerText)
+//                                         .end()
+//      if (priceNumber < minPrice) {
+//        u=true;
+//      }
+//    } catch (e) {
+//      console.log(e.message)
+//      throw e;
+//    }
+//  }
+//  if(u){
+//  sendmail({
+//   from: "b.hiteshbansal@gmail,com",
+//   to: Email,
+//   subject: 'Price Is Low',
+//   html: `The price on ${url} has dropped below ${minPrice}`
+// }, function(err, reply) {
+//   console.log(err && err.stack);
+//   console.dir(reply);
+mongoose.connect('mongodb+srv://hitesh:hitesh@cluster0.rtpkvtx.mongodb.net/Tracker?retryWrites=true&w=majority');
+const user = new User({ email: Email,
+                          price: minPrice,
+                          url:url
+                       });
+                       console.log(user)
+user.save().then(() => console.log('saved'));
+console.log(url,Email,minPrice);
+res.send("connected");
+})
+mongoose.connection.close()
+module.exports = router;
