@@ -38,7 +38,7 @@ router.post('/',(req,res)=>{
 // }, function(err, reply) {
 //   console.log(err && err.stack);
 //   console.dir(reply);
-mongoose.connect('mongodb+srv://hitesh:hitesh@cluster0.rtpkvtx.mongodb.net/Tracker?retryWrites=true&w=majority');
+mongoose.connect('mongodb+srv://hitesh:process.env.KEY@cluster0.rtpkvtx.mongodb.net/Tracker?retryWrites=true&w=majority');
 const user = new User({ email: Email,
                           price: minPrice,
                           url:url
