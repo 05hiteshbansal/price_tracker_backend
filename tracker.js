@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
  require('dotenv').config()
  const User=require('./schema')
- const sendmail = require('sendmail')();
-const nightmare = require('nightmare')()
 const express = require("express");
 const router = express.Router();
 router.post('/',(req,res)=>{
@@ -44,7 +42,7 @@ mongoose.connect(`mongodb+srv://hitesh:${key}@cluster0.rtpkvtx.mongodb.net/Track
 const user = new User({ email: Email,price: minPrice,url:url});
                        console.log(user)
 user.save().then(() => console.log('saved'));
-console.log(url,Email,minPrice);
+//console.log(url,Email,minPrice);
 res.send("connected");
 })
 mongoose.connection.close()
