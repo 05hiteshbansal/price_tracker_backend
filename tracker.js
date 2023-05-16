@@ -38,11 +38,10 @@ router.post('/',(req,res)=>{
 // }, function(err, reply) {
 //   console.log(err && err.stack);
 //   console.dir(reply);
-mongoose.connect('mongodb+srv://hitesh:process.env.KEY@cluster0.rtpkvtx.mongodb.net/Tracker?retryWrites=true&w=majority');
-const user = new User({ email: Email,
-                          price: minPrice,
-                          url:url
-                       });
+
+var key=process.env.KEY
+mongoose.connect(`mongodb+srv://hitesh:${key}@cluster0.rtpkvtx.mongodb.net/Tracker?retryWrites=true&w=majority`);
+const user = new User({ email: Email,price: minPrice,url:url});
                        console.log(user)
 user.save().then(() => console.log('saved'));
 console.log(url,Email,minPrice);

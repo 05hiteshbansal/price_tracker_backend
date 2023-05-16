@@ -8,4 +8,4 @@ const trackSchema = new mongoose.Schema({
     url:String
   });
 
- module.exports = mongoose.model('users', trackSchema);
+ module.exports = mongoose.model('tracker', trackSchema);
